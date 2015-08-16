@@ -1,0 +1,8 @@
+-- first frege program
+module com.talios.frege.Test where
+
+sayHello = println
+
+main (arg: _) = sayHello arg
+main _ = main ["from frege"]
+
