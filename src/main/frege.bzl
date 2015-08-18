@@ -12,12 +12,13 @@ def frege_impl(ctx):
       all_deps += this_dep.java.transitive_runtime_deps
 
   cmd = "rm -rf %s && mkdir -p %s && java -version && " % (build_output, build_output)
-  cmd += "java -Xss2m -jar %s -v -hints -d %s %s && " % (
+  cmd += "%s -Xss2m -jar %s -make -d %s %s &>build.log && " % (
+    ctx.file._java.path,
     ctx.file.lib.path,
     build_output,
     " ".join([src.path for src in ctx.files.srcs]))
 
-  cmd += "jar cvf %s -C %s .\n" % (class_jar.path , build_output )
+  cmd += "%s cvf %s -C %s . &>build.log\n" % (ctx.file._jar.path, class_jar.path , build_output )
 
   ctx.action(
     inputs=ctx.files.srcs + ctx.files.deps,
@@ -31,6 +32,8 @@ def frege_impl(ctx):
 _frege_library_jar = rule(
   implementation = frege_impl,
   attrs={
+    "_java": attr.label(default=Label("//tools/jdk:java"), single_file=True),
+    "_jar": attr.label(default=Label("//tools/jdk:jar"), single_file=True),	
     "lib": attr.label(mandatory=True, single_file=True),
     "srcs": attr.label_list(mandatory=False, allow_files=FileType([".fr"])),
     "deps": attr.label_list(mandatory=False, allow_files=FileType([".jar"]))

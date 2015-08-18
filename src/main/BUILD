@@ -7,7 +7,7 @@ frege_library(
 
 java_binary(
   name="mylib",
-  srcs = glob(["java/com/talios/test/*.java"]),
+  srcs=glob(["java/**/*.java"]),
   runtime_deps = [
     ":frege_test"
   ],
