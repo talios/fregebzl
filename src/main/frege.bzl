@@ -11,7 +11,7 @@ def frege_impl(ctx):
     if hasattr(this_dep, "java"):
       all_deps += this_dep.java.transitive_runtime_deps
 
-  cmd = "rm -rf %s && mkdir -p %s && " % (build_output, build_output)
+  cmd = "rm -rf %s && mkdir -p %s && java -version && " % (build_output, build_output)
   cmd += "java -Xss2m -jar %s -v -hints -d %s %s && " % (
     ctx.file.lib.path,
     build_output,
