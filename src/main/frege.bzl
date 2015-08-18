@@ -1,6 +1,6 @@
 # Bazel rule for compiling frege files.
 
-def _impl(ctx):
+def frege_impl(ctx):
   """Compile a .jar file form Frege saource files."""
   class_jar = ctx.outputs.class_jar
   build_output = class_jar.path + ".build_output"
@@ -29,7 +29,7 @@ def _impl(ctx):
   )
 
 _frege_library_jar = rule(
-  implementation = _impl,
+  implementation = frege_impl,
   attrs={
     "lib": attr.label(mandatory=True, single_file=True),
     "srcs": attr.label_list(mandatory=False, allow_files=FileType([".fr"])),
