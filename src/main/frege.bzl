@@ -11,20 +11,21 @@ def _impl(ctx):
     if hasattr(this_dep, "java"):
       all_deps += this_dep.java.transitive_runtime_deps
 
-  cmd = "rm -rf %s && mkdir -p %s\n" % (build_output, build_output)
+  cmd = "rm -rf %s && mkdir -p %s && " % (build_output, build_output)
   cmd += "java -Xss2m -jar %s -v -hints -d %s %s && " % (
     ctx.file.lib.path,
-    build_output  , " ".join([src.path for src in ctx.files.srcs]))
+    build_output,
+    " ".join([src.path for src in ctx.files.srcs]))
 
   cmd += "jar cvf %s -C %s .\n" % (class_jar.path , build_output )
 
   ctx.action(
     inputs=ctx.files.srcs + ctx.files.deps,
     outputs=[class_jar],
-	mnemonic = "Fregec",
+    mnemonic = "Fregec",
     progress_message="Building frege library %s" % class_jar.basename,
     command=cmd,
-	use_default_shell_env = True
+    use_default_shell_env = True
   )
 
 _frege_library_jar = rule(
@@ -38,16 +39,6 @@ _frege_library_jar = rule(
 )
 
 def frege_library(name, lib, srcs=[], deps=[], **kwargs):
-  """Compile Frege source files into a jar library
-  """
-  _frege_library_jar(
-    name = name + "-impl",
-	lib = lib,
-	srcs = srcs,
-	deps = deps
-  )
-  native.java_import(
-    name = name,
-	jars = [name + "-impl"],
-	**kwargs
-  )
+  """Compile Frege source files into a jar library"""
+  _frege_library_jar(name = name + "-impl", lib = lib, srcs = srcs, deps = deps)
+  native.java_import(name = name, jars = [name + "-impl"], **kwargs)
