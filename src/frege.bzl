@@ -11,10 +11,15 @@ def frege_impl(ctx):
     if hasattr(this_dep, "java"):
       all_deps += this_dep.java.transitive_runtime_deps
 
-  cmd = "rm -rf %s && mkdir -p %s && java -version && " % (build_output, build_output)
-  cmd += "%s -Xss2m -jar %s -make -d %s %s &>build.log && " % (
+  frege_dep_path = ""
+  if all_deps:
+    frege_dep_path = "-fp " + ":".join([dep.path for dep in ctx.files.deps])
+
+  cmd = "rm -rf %s && mkdir -p %s && " % (build_output, build_output)
+  cmd += "%s -Xss2m -jar %s -make %s -d %s %s &>build.log && " % (
     ctx.file._java.path,
     ctx.file.lib.path,
+    frege_dep_path,
     build_output,
     " ".join([src.path for src in ctx.files.srcs]))
 
