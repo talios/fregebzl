@@ -29,7 +29,8 @@ def frege_impl(ctx):
     inputs=ctx.files.srcs + ctx.files.deps,
     outputs=[class_jar],
     mnemonic = "Fregec",
-    progress_message="Building frege library %s" % class_jar.basename,
+    progress_message="Building frege library %s (%d files)" % (
+      class_jar.basename, len(ctx.files.srcs)),
     command=cmd,
     use_default_shell_env = True
   )
