@@ -16,7 +16,7 @@ def frege_impl(ctx):
     frege_dep_path = "-fp " + ":".join([dep.path for dep in ctx.files.deps])
 
   cmd = "rm -rf %s && mkdir -p %s && " % (build_output, build_output)
-  cmd += "%s -Xss2m -jar %s -make %s -d %s %s && " % (
+  cmd += "%s -Xss2m -jar %s -make %s -inline -d %s %s && " % (
     ctx.file._java.path,
     ctx.file.lib.path,
     frege_dep_path,
