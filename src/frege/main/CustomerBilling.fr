@@ -1,0 +1,10 @@
+module com.talios.frege.CustomerBilling where
+
+import com.talios.frege.Billing
+
+data Customer = Customer {name :: String, emailAddress :: String, bills :: [Bill] }
+
+instance Discountable Customer where
+  discountFor c | length c.bills > 5 = Discount (Just 30.0)
+                | length c.bills > 1 = Discount (Just 10.0)
+                | otherwise          = Discount Nothing

@@ -1,8 +1,13 @@
 -- first frege program
 module com.talios.frege.Test where
 
-sayHello = println
+import com.talios.frege.Billing
+import com.talios.frege.CustomerBilling
 
-main (arg: _) = sayHello arg
-main _ = main ["from frege"]
+main _ = println $ "The invoice for " ++ cust.name  ++ " is " ++ show discount ++ " of " ++ show totalBill ++ " with a final amount of " ++ show net
+   where bills     = [Bill 30.0, Bill 30.0, Bill 30.0, Bill 30.0, Bill 30.0, Bill 30.0]
+         cust      = Customer "Mark" "mark@talios.com" bills
+         totalBill = fold (\a\b -> a + Bill.amount b) 0.0 cust.bills
+         net       = calculateDiscountedAmount cust totalBill
+         discount  = discountFor cust
 

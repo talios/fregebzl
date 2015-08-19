@@ -1,0 +1,19 @@
+module com.talios.frege.Billing where
+
+-- Billing and Financial stuff.
+
+data Bill = Bill {amount :: Double}
+data Discount = Discount { percentage :: Maybe Double } 
+
+instance Show Discount where
+  show d =  case d.percentage of
+              Nothing = "nothing"
+              Just pc = show pc ++ "%"
+
+class Discountable d where
+    discountFor :: d -> Discount
+
+calculateDiscountedAmount :: Discountable d => d -> Double -> Double
+calculateDiscountedAmount d v = case d.discountFor.percentage of
+                                  Nothing = v
+                                  Just pc = v * (pc / 100.0)
