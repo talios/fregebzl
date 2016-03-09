@@ -6,7 +6,7 @@ public class Test {
 
 		System.out.println("Hello");
 
-		com.talios.frege.Test.main(null);
+		com.talios.frege.Test.main(args);
 
 	}
 
