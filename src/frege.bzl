@@ -1,7 +1,7 @@
 # Bazel rule for compiling frege files.
 
 def frege_impl(ctx):
-  """Compile a .jar file form Frege saource files."""
+  """Compile a .jar file form Frege source files."""
   class_jar = ctx.outputs.class_jar
   build_output = class_jar.path + ".build_output"
 
@@ -38,8 +38,8 @@ def frege_impl(ctx):
 _frege_library_jar = rule(
   implementation = frege_impl,
   attrs={
-    "_java": attr.label(default=Label("//tools/jdk:java"), single_file=True),
-    "_jar": attr.label(default=Label("//tools/jdk:jar"), single_file=True),	
+    "_java": attr.label(default=Label("@bazel_tools//tools/jdk:java"), single_file=True),
+    "_jar": attr.label(default=Label("@bazel_tools//tools/jdk:jar"), single_file=True),
     "lib": attr.label(mandatory=True, single_file=True),
     "srcs": attr.label_list(mandatory=False, allow_files=FileType([".fr"])),
     "deps": attr.label_list(mandatory=False, allow_files=FileType([".jar"]))
@@ -51,3 +51,11 @@ def frege_library(name, lib, srcs=[], deps=[], **kwargs):
   """Compile Frege source files into a jar library"""
   _frege_library_jar(name = name + "-impl", lib = lib, srcs = srcs, deps = deps)
   native.java_import(name = name, jars = [name + "-impl"], **kwargs)
+
+def frege_repositories():
+  # Released Version of Frege
+  native.http_jar(
+    name = "frege_lib",
+    url = "https://github.com/Frege/frege/releases/download/3.23.288/frege3.23.422-ga05a487.jar",
+    sha256 = "e283f1b380c42989eafed9bb3f72015fab783e8eccbd360c88f5f7ba1048ac04",
+  )
