@@ -56,6 +56,6 @@ def frege_repositories():
   # Released Version of Frege
   native.http_jar(
     name = "frege_lib",
-    url = "https://github.com/Frege/frege/releases/download/3.23.288/frege3.23.888-g4e22ab6.jar",
-    sha256 = "b825fbdccb5c3e81ef36f51b112d2dc449966dc5f11578a89b93e39bcac2f695",
+    url = "https://github.com/Frege/frege/releases/download/3.24alpha/frege3.24.100.jar",
+    sha256 = "6ad1c4535d61b1f0cd9edbbe46bdad110cfac15d413bcc28dcbb78cd8800e6e9",
   )

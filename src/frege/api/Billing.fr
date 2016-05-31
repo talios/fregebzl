@@ -3,7 +3,7 @@ module com.talios.frege.Billing where
 -- Billing and Financial stuff.
 
 data Bill = Bill {amount :: Double}
-data Discount = Discount { percentage :: Maybe Double } 
+data Discount = Discount { percentage :: Maybe Double }
 
 instance Show Discount where
   show d =  case d.percentage of
